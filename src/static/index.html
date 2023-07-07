@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ChitChat</title>
+
+
+    <!-- Owl-Carousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+        integrity="sha256-UhQQ4fxEeABh4JrcmAJ1+16id/1dnlOEVCFOxDef9Lw=" crossorigin="anonymous" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+        integrity="sha256-kksNxjDRxd/5+jGurZUJd1sdR2v+ClrCl3svESBaJqw=" crossorigin="anonymous" />
+
+    <!-- Font Awesome CDN -->
+    <script src="https://kit.fontawesome.com/8c666ca921.js"></script>
+
+    <!-- Custom Style-->
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="shortcut icon" href="./images/logo (5).png" />
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="panel">
+            <div class="row">
+                <div class="col liquid">
+                    <!-- Owl-Carousel -->
+
+                    <div class="owl-carousel owl-theme">
+                        <img src="./images/2683776_1_-removebg-preview.png" alt="" class="login_img">
+                        <img src="./images/2724269_1_-removebg-preview.png" alt="" class="login_img">
+                        <img src="./images/3629604_1_-removebg-preview.png" alt="" class="login_img">
+                    </div>
+                    <!-- /Owl-Carousel -->
+
+                    <div class="follow">
+                        <h1>New Here?</h1>
+                        <p>Let's get started..</p>
+                        <a href="/signup">
+                            <button class="btn btn-signup">SignUp</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="col login">
+                    <!-- <form> -->
+                    <div class="forms">
+                        <div class="titles">
+
+                            <h2>Ready to Login?</h2>
+                            <h4>Why Wait?</h4>
+                        </div>
+                        <!-- <a href=“/login”> -->
+                        <a href="/login">
+                            <button class="btn btn-login">Login</button>
+                        </a>
+                    </div>
+                    <!-- </form> -->
+                    <div class="applogo">
+                        <img src="./images/logo (5).png" alt="ChitChat">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+        integrity="sha256-pTxD+DSzIwmwhOqTFN+DB+nHjO4iAsbgfyFq5K5bcE0=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.owl-carousel').owlCarousel({
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 1500,
+                autoplayHoverPause: true,
+                items: 1
+            });
+        });
+    </script>
+</body>
+
+</html>

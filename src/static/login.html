@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ChitChat LoginScreen</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet" />
+  <link rel="shortcut icon" href="./images/logo (5).png" />
+  <script src="https://kit.fontawesome.com/8c666ca921.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
+</head>
+
+<body>
+  <img class="wave" src="images/wave2.png" />
+  <div class="container">
+    <div class="img">
+      <img src="images/3692685_1_-removebg-preview.png" />
+    </div>
+    <div class="login-content">
+      <form action="#" id="login">
+        <img src="images/avatar.png" />
+        <h3 class="title">Hey! We Missed You!</h3>
+        <div class="input-div one">
+          <div class="i">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="div">
+            <input type="email" name="email" id="email" placeholder="Email" class="input" />
+          </div>
+        </div>
+        <div class="input-div pass">
+          <div class="i">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="div">
+            <input type="password" name="password" id="password" placeholder="Password" class="input" />
+          </div>
+        </div>
+        <button id="login_btn" class="btn">Login</button>
+        <p class="social-text">Or Sign in with social platforms</p>
+        <div class="social-media">
+          <a href="#" id="login3" class="social-icon">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" id="login5" class="social-icon">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" id="login2" class="social-icon">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="#" id="login4" class="social-icon">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      var firebaseConfig = {
+        apiKey: "AIzaSyBz_6hQ-_RNJTis3OZe4iF8oOjE5F7uLBs",
+        authDomain: "chitchatapp-b69e9.firebaseapp.com",
+        databaseURL: "https://chitchatapp-b69e9-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "chitchatapp-b69e9",
+        storageBucket: "chitchatapp-b69e9.appspot.com",
+        messagingSenderId: "80091643214",
+        appId: "1:80091643214:web:69fa5b96b724110a6d721f",
+        measurementId: "GTM-P8G5ZC7"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+
+      // login with customized email and password  
+      document
+        .getElementById("login")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          const email = event.target.email.value;
+          const password = event.target.password.value;
+
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(({ user }) => {
+              return user.getIdToken().then((idToken) => {
+                return fetch("/sessionLogin", {
+                  method: "POST",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "CSRF-Token": Cookies.get("XSRF-TOKEN"),
+                  },
+                  body: JSON.stringify({ idToken }),
+                });
+              });
+            })
+            .then(() => {
+              return firebase.auth().signOut();
+            })
+            .then(() => {
+              window.location.assign("/landing");
+            });
+          return false;
+        });
+
+      // Google Login     
+      document.getElementById('login2').addEventListener('click', GoogleLogin)
+
+
+      let provider = new firebase.auth.GoogleAuthProvider()
+
+      function GoogleLogin() {
+        console.log('Login Btn Call')
+        firebase.auth().signInWithPopup(provider).then(res => {
+
+
+          window.location.assign("/landing");
+        }).catch(e => {
+          alert(e.message);
+          console.log(e);
+        })
+      }
+
+      // Facebook Login
+      document.getElementById('login3').addEventListener('click', facebookLogin)
+
+      let provider2 = new firebase.auth.FacebookAuthProvider();
+
+      function facebookLogin() {
+        console.log('Login Btn Call2')
+        firebase.auth().signInWithPopup(provider2).then(res => {
+
+
+          window.location.assign("/landing");
+        }).catch(e => {
+          alert(e.message);
+          console.log(e);
+        })
+      }
+
+      // GitHub Login
+      document.getElementById('login4').addEventListener('click', githubLogin)
+
+      let provider3 = new firebase.auth.GithubAuthProvider();
+
+      function githubLogin() {
+        console.log('Login Btn Call3')
+        firebase.auth().signInWithPopup(provider3).then(res => {
+
+
+          window.location.assign("/landing");
+        }).catch(e => {
+          alert(e.message);
+          console.log(e);
+        })
+      }
+
+      // Twitter Login
+      document.getElementById('login5').addEventListener('click', twitterLogin)
+
+      let provider4 = new firebase.auth.TwitterAuthProvider();
+      function twitterLogin() {
+        console.log('Login Btn Call4')
+        firebase.auth().signInWithPopup(provider4).then(res => {
+
+
+          window.location.assign("/landing");
+        }).catch(e => {
+          alert(e.message);
+          console.log(e);
+        })
+      }
+
+
+
+
+
+      function checkAuthState() {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            document.getElementById('LoginScreen').style.display = "none"
+            document.getElementById('dashboard').style.display = "block"
+            showUserDetails(user)
+          } else {
+
+          }
+        })
+      }
+
+      function LogoutUser() {
+        console.log('Logout Btn Call')
+        firebase.auth().signOut().then(() => {
+          document.getElementById('LoginScreen').style.display = "block"
+          document.getElementById('dashboard').style.display = "none"
+        }).catch(e => {
+          console.log(e)
+        })
+      }
+      checkAuthState()
+
+    });
+  </script>
+
+  <script src="/js/main.js"></script>
+
+</html>

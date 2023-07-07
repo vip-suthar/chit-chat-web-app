@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ChitChat Register</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet" />
+  <link rel="shortcut icon" href="./images/logo (5).png" />
+  <script src="https://kit.fontawesome.com/8c666ca921.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+
+<body>
+  <img class="wave" src="images/wave.png">
+  <div class="container">
+    <div class="img">
+      <img src="images/2676475_1_-removebg-preview (1).png">
+    </div>
+    <div class="login-content">
+      <form action="#" id="signup">
+        <img src="images/avatar.png" />
+        <h3 class="title">Welcome
+
+        </h3>
+        <div class="input-div one">
+          <div class="i">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="div">
+            <input type="email" name="email" id="email" placeholder="Email" class="input" />
+          </div>
+        </div>
+        <div class="input-div pass">
+          <div class="i">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="div">
+            <input type="password" name="password" id="password" placeholder="Password" class="input" />
+          </div>
+        </div>
+        <!-- <a href="#">Forgot Password?</a> -->
+        <button id="signup_btn" class="btn">SignUp</button>
+        <p class="social-text">Or Sign in with social platforms</p>
+        <div class="social-media">
+          <a href="#" id="login3" class="social-icon">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" id="login5" class="social-icon">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" id="login2" class="social-icon">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="#" id="login4" class="social-icon">
+            <i class="fab fa-github"></i>
+          </a>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyBz_6hQ-_RNJTis3OZe4iF8oOjE5F7uLBs",
+      authDomain: "chitchatapp-b69e9.firebaseapp.com",
+      databaseURL: "https://chitchatapp-b69e9-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "chitchatapp-b69e9",
+      storageBucket: "chitchatapp-b69e9.appspot.com",
+      messagingSenderId: "80091643214",
+      appId: "1:80091643214:web:69fa5b96b724110a6d721f",
+      measurementId: "GTM-P8G5ZC7"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+
+
+
+    document
+      .getElementById("signup")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then(({ user }) => {
+            return user.getIdToken().then((idToken) => {
+              return fetch("/sessionLogin", {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  "CSRF-Token": Cookies.get("XSRF-TOKEN"),
+                },
+                body: JSON.stringify({ idToken }),
+              });
+            });
+          })
+          .then(() => {
+            return firebase.auth().signOut();
+          })
+          .then(() => {
+            window.location.assign("/landing");
+          });
+        return false;
+      });
+
+    document.getElementById('login2').addEventListener('click', GoogleLogin)
+
+
+    let provider = new firebase.auth.GoogleAuthProvider()
+
+    function GoogleLogin() {
+      console.log('Login Btn Call')
+      firebase.auth().signInWithPopup(provider).then(res => {
+
+
+        window.location.assign("/landing");
+      }).catch(e => {
+        alert(e.message);
+        console.log(e);
+      })
+    }
+
+    document.getElementById('login3').addEventListener('click', facebookLogin)
+
+    let provider2 = new firebase.auth.FacebookAuthProvider();
+
+    function facebookLogin() {
+      console.log('Login Btn Call2')
+      firebase.auth().signInWithPopup(provider2).then(res => {
+
+
+        window.location.assign("/landing");
+      }).catch(e => {
+        alert(e.message);
+        console.log(e);
+      })
+    }
+
+
+    document.getElementById('login4').addEventListener('click', githubLogin)
+
+    let provider3 = new firebase.auth.GithubAuthProvider();
+
+    function githubLogin() {
+      console.log('Login Btn Call3')
+      firebase.auth().signInWithPopup(provider3).then(res => {
+
+
+        window.location.assign("/landing");
+      }).catch(e => {
+        alert(e.message);
+        console.log(e);
+      })
+    }
+
+
+    document.getElementById('login5').addEventListener('click', twitterLogin)
+
+    let provider4 = new firebase.auth.TwitterAuthProvider();
+    function twitterLogin() {
+      console.log('Login Btn Call4')
+      firebase.auth().signInWithPopup(provider4).then(res => {
+
+
+        window.location.assign("/landing");
+      }).catch(e => {
+        alert(e.message);
+        console.log(e);
+      })
+    }
+
+  </script>
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>
